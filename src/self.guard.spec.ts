@@ -1,7 +1,7 @@
-import { SelfGuard } from './self.guard';
+import { SelfGuard } from '@messanger/src/self.guard';
 
 describe('SelfGuard', () => {
   it('should be defined', () => {
-    expect(new SelfGuard()).toBeDefined();
+    expect(new SelfGuard(null, null)).toBeDefined();
   });
 });

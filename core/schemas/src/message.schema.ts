@@ -5,7 +5,8 @@ const { ObjectId } = mongoose.Types;
 export default mongoose.Schema({
   text: String,
   date: Date,
-  isRead: Boolean,
+  isReadSomeOne: Boolean,
+  isReadUsers: Array,
   userId: ObjectId,
   conferenceId: ObjectId
 });

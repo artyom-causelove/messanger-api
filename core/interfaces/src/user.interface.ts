@@ -1,5 +1,6 @@
 interface IUser {
   personalId: string,
+  outerId: any,
   nickname: string,
   password: string,
   age: number,

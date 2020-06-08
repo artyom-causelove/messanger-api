@@ -1,7 +1,8 @@
 interface IMessage {
   text: string,
   date: Date,
-  isRead: boolean,
+  isReadSomeOne: boolean,
+  isReadUsers: Array<string>,
   userId: any,
   conferenceId: any
 }

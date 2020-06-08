@@ -1,12 +1,24 @@
-import { Controller, Get, Post, Body, UseGuards, SetMetadata, Put, Headers, Param, HttpStatus, BadRequestException} from '@nestjs/common';
-import { Model } from 'mongoose';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  SetMetadata,
+  Put,
+  Headers,
+  Param,
+  HttpStatus,
+  BadRequestException
+} from '@nestjs/common';
 
 import { UsersService } from '@messanger/src/users/users.service';
 import { HashService } from '@messanger/src/hash/hash.service';
 import { ImageService } from '@messanger/src/image/image.service';
 import { ConferencesService } from '@messanger/src/conferences/conferences.service';
+
 import { IConference } from '@messanger/interfaces';
 import { CreateConferenceDto, EditConferenceDto } from '@messanger/dtos';
+
 import { RoleGuard } from '@messanger/src/role.guard';
 
 @Controller('conferences')
@@ -17,11 +29,6 @@ export class ConferencesController {
     private imageService: ImageService,
     private conferencesService: ConferencesService
   ) { }
-
-  @Get()
-  async findAll(): Promise<IConference[]> {
-    return await this.conferencesService.all();
-  }
 
   @UseGuards(RoleGuard)
   @SetMetadata('roles', ['authorized'])
@@ -101,7 +108,7 @@ export class ConferencesController {
     apiKey = apiKey.substr(7);
     const user = await this.usersService.findOneBy({ apiKey });
 
-    createConferenceDto['ownerUserId'] = user['_id'];
+    createConferenceDto.ownerUserId = user['_id'];
 
     const createdConference = await this.conferencesService.create(createConferenceDto);
 

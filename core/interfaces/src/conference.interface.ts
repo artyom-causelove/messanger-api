@@ -2,7 +2,8 @@ interface IConference {
   name: string,
   date: Date,
   avatar: string,
-  ownerUserId: any
+  ownerUserId: any,
+  messageBlocks: string[]
 }
 
 export default IConference;

@@ -16,8 +16,10 @@ import { Model } from 'mongoose';
 import { UsersService } from '@messanger/src/users/users.service';
 import { HashService } from '@messanger/src/hash/hash.service';
 import { ImageService } from '@messanger/src/image/image.service';
+
 import { RoleGuard } from '@messanger/src/role.guard';
 import { SelfGuard } from '@messanger/src/self.guard';
+
 import { CreateUserDto, LoginUserDto, EditUserDto } from '@messanger/dtos';
 import { IUser } from '@messanger/interfaces';
 

@@ -1,7 +1,7 @@
-import { AuthGuard } from './auth.guard';
+import { RoleGuard } from '@messanger/src/role.guard';
 
-describe('AuthGuard', () => {
+describe('RoleGuard', () => {
   it('should be defined', () => {
-    expect(new AuthGuard()).toBeDefined();
+    expect(new RoleGuard(null, null)).toBeDefined();
   });
 });
