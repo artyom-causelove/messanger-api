@@ -7,5 +7,6 @@ export default mongoose.Schema({
   date: Date,
   avatar: String,
   ownerUserId: ObjectId,
-  messageBlocks: Array
+  messageBlocks: Array,
+  participants: Array
 });

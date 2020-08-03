@@ -18,6 +18,7 @@ export class ConferencesService extends Service<IConference> {
   async create(createConferenceDto: CreateConferenceDto): Promise<IConference> {
     createConferenceDto['date'] = new Date();
     createConferenceDto['messageBlocks'] = [];
+    createConferenceDto['participants'] = [createConferenceDto.ownerUserId];
 
     if (!createConferenceDto['avatar']) {
       createConferenceDto['avatar'] = null;

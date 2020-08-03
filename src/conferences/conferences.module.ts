@@ -18,6 +18,7 @@ import {
   MessageBlockSchema,
   MessageSchema
 } from '@messanger/schemas';
+import { ConferenceParticipantsService } from '../participants/participants.service';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import {
     ]),
     UsersModule
   ],
-  providers: [ConferencesService, HashService, ImageService, RoleGuard, SelfGuard],
+  providers: [ConferencesService, HashService, ImageService, ConferenceParticipantsService, RoleGuard, SelfGuard],
   exports: [ConferencesService],
   controllers: [ConferencesController]
 })

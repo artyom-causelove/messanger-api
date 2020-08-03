@@ -146,4 +146,13 @@ export class UsersController {
 
     return false;
   }
+  
+  @UseGuards(RoleGuard)
+  @SetMetadata('roles', ['authorized'])
+  @Get('find/nickname/:nickname')
+  async findByNickname(
+    @Param('nickname') nickname: string
+  ): Promise<IUser[]> {
+    return this.usersService.findBy({ nickname });
+  }
 }

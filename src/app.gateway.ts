@@ -120,18 +120,20 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
   handleDisconnect(client: Socket) {
     const offOnlineUser: OnlineUser = this.clients.find(c => c.client.id === client.id);
 
-    offOnlineUser.conferences.forEach(conf => {
-      const existUserConf: OnlineConference = this.conferences.find(c => c.confId === conf.confId);
+    if (offOnlineUser) {
+      offOnlineUser.conferences.forEach(conf => {
+        const existUserConf: OnlineConference = this.conferences.find(c => c.confId === conf.confId);
 
-      if (existUserConf.clients.length === 1) {
-        this.conferences = this.conferences.filter(c => c.confId !== conf.confId);
-      } else {
-        existUserConf.clients = existUserConf.clients.filter(c => c.id !== client.id);
-      }
-    });
+        if (existUserConf.clients.length === 1) {
+          this.conferences = this.conferences.filter(c => c.confId !== conf.confId);
+        } else {
+          existUserConf.clients = existUserConf.clients.filter(c => c.id !== client.id);
+        }
+      });
 
-    this.clients = this.clients.filter(c => c.client.id !== client.id);
-    this.logger.log(`${client.id}: disconnected via socket`);
+      this.clients = this.clients.filter(c => c.client.id !== client.id);
+      this.logger.log(`${client.id}: disconnected via socket`);
+    }
   }
 
   async handleConnection(client: Socket) {

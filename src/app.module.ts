@@ -26,6 +26,7 @@ import {
   MessageBlockSchema,
   MessageSchema
 } from '@messanger/schemas';
+import { ConferenceParticipantsService } from './participants/participants.service';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import {
     HashService,
     ImageService,
     ConferencesService,
+    ConferenceParticipantsService,
     AppGateway
   ],
 })

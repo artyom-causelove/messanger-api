@@ -8,18 +8,21 @@ import {
   Headers,
   Param,
   HttpStatus,
-  BadRequestException
+  BadRequestException,
+  Get
 } from '@nestjs/common';
+import { Types } from 'mongoose';
 
 import { UsersService } from '@messanger/src/users/users.service';
 import { HashService } from '@messanger/src/hash/hash.service';
 import { ImageService } from '@messanger/src/image/image.service';
 import { ConferencesService } from '@messanger/src/conferences/conferences.service';
 
-import { IConference } from '@messanger/interfaces';
+import { IConference, IUser } from '@messanger/interfaces';
 import { CreateConferenceDto, EditConferenceDto } from '@messanger/dtos';
 
 import { RoleGuard } from '@messanger/src/role.guard';
+import { ConferenceParticipantsService } from '../participants/participants.service';
 
 @Controller('conferences')
 export class ConferencesController {
@@ -27,7 +30,8 @@ export class ConferencesController {
     private usersService: UsersService,
     private hashService: HashService,
     private imageService: ImageService,
-    private conferencesService: ConferencesService
+    private conferencesService: ConferencesService,
+    private conferenceParticipantsService: ConferenceParticipantsService
   ) { }
 
   @UseGuards(RoleGuard)
@@ -87,6 +91,41 @@ export class ConferencesController {
     });
 
     return conferences;
+  }
+
+  @UseGuards(RoleGuard)
+  @SetMetadata('roles', ['authorized'])
+  @Get(':conf_id/participants')
+  async getParticipants(
+    @Param('conf_id') confId: string
+  ): Promise<IUser[]> {
+    const conf = await this.conferencesService.findById(confId);
+    const participantIds = conf.participants.map(part => part.toString());
+
+    const participants = await this.usersService.findByIds(participantIds);
+
+    return participants;
+  }
+
+  @UseGuards(RoleGuard)
+  @SetMetadata('roles', ['authorized'])
+  @Post(':conf_id/participants')
+  async addParticipant(
+    @Body() dto: { userOuterId: string },
+    @Param('conf_id') confId: string
+  ): Promise<IConference> {
+    const conf = await this.conferencesService.findById(confId);
+    const user = await this.usersService.findOneBy({ outerId: dto.userOuterId });
+
+    await this.usersService.updateModel(
+      user,
+      { conferences: user.conferences.concat(new Types.ObjectId(conf['_id'])) }
+    );
+
+    return this.conferencesService.updateModel(
+      conf,
+      { participants: conf.participants.concat(new Types.ObjectId(user['_id'])) }
+    );
   }
 
   @UseGuards(RoleGuard)
